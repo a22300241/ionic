@@ -1,0 +1,15 @@
+ <ion-card>
+          <ion-card-subtitle class="ion-margin">
+            <span class="text-prymary">{{index()}}. </span>
+            <span class="article-sourse-name">{{article()[index()!]?.source?.name}}</span>
+          </ion-card-subtitle>
+          <ion-card-title class="ion-padding-horizontal ion-margin-buttom">
+            {{article()[index()!]?.title}}
+          </ion-card-title>
+          <ion-img [src]="article()[index()!]?.urlToImage"></ion-img>
+          @if (article()[index()!]) {
+          <ion-card-content>
+            <p>{{article()[index()!]?.description}}</p>
+          </ion-card-content>
+        }
+        </ion-card>
