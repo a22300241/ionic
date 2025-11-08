@@ -1,13 +1,28 @@
-<ion-header [translucent]="true">
+<ion-header [translucent]="true" mode="ios" class="ion-no-border">
   <ion-toolbar>
-    <ion-title>tap2</ion-title>
+    <ion-title>Encabezados</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
+  <ion-header collapse="condense" mode="ios" class="ion-no-border">
     <ion-toolbar>
-      <ion-title size="large">tap2</ion-title>
+      <ion-title size="large">Encabezados</ion-title>
     </ion-toolbar>
   </ion-header>
+
+  <ion-segment [value]="selectedCategory" (ionChange)="segmentChanged($event)" scrollable="true" mode="md">
+    @for (categoria of categorias; track $index) {
+    <ion-segment-button [value]="categoria">
+      <ion-label class="ion-text-capitalize">{{categoria}}</ion-label>
+    </ion-segment-button>
+  }
+  </ion-segment>
+
+  <app-articles [articles]="articles"></app-articles>
+
+  <ion-infinite-scroll threshold="25%" position="bottom" (ionInfinite)="loadData()">
+    <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Cargando">
+    </ion-infinite-scroll-content>
+  </ion-infinite-scroll>
 </ion-content>

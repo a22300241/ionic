@@ -1,25 +1,65 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable, OnDestroy, OnInit } from '@angular/core';
 import { environment } from 'src/environments/environment';
-import { Article, NewsResponse } from '../interfaces';
-import { map, Observable } from 'rxjs';
+import { Article, ArticleByCategoryAndPage, NewsResponse } from '../interfaces';
+import { map, Observable, of } from 'rxjs';
 const apiKey=environment.apiKey
+const apiUrl=environment.apiURL
 @Injectable({
   providedIn: 'root'
 })
 export class News {
-  constructor(private http:HttpClient){
-  }
-  getTopHeadLines( ):Observable<Article[]>{
-    return this.http.get<NewsResponse>(`https://newsapi.org/v2/top-headlines?country=us&category=business`,{
+
+  private articleByCategoryAndPage:ArticleByCategoryAndPage={}
+
+  constructor(private http:HttpClient){}
+  private executeQuery<T>(endpoint:string){
+    console.log('peticion htpp realizada')
+    return this.http.get<T>(`${apiUrl}${endpoint}`,{
       params:{
-        apiKey:apiKey
+        apiKey,
+        country:'us',
       }
-    }).pipe(
-      map(({articles})=>articles)
-    )
-
+    })
   }
 
+
+
+  getTopHeadLines( ):Observable<Article[]>{
+  return this.getArticlesByCategory('business');
+
+  }
+  getTopHeadLinesByCategory(category:string,loadMore:boolean=false):Observable<Article[]>{
+    if(loadMore){
+      return this.getArticlesByCategory(category)
+    }
+    if(this.articleByCategoryAndPage[category]){
+      return of(this.articleByCategoryAndPage[category].articles)
+    }
+    return this.getArticlesByCategory(category);
+  }
+
+  private getArticlesByCategory(category:string):Observable<Article[]>{
+    if(Object.keys(this.articleByCategoryAndPage).includes(category)){
+      /* this.articleByCategoryAndPage[category].page+=1; */
+    }else{
+      this.articleByCategoryAndPage[category]={
+        page:0,
+        articles:[]
+      }
+    }
+    const page =this.articleByCategoryAndPage[category].page+1;
+    return this.executeQuery<NewsResponse>(`/top-headlines?category=${category}&page=${page}`)
+    .pipe(
+      map(({articles})=>{
+        if(articles.length==0)return this.articleByCategoryAndPage[category].articles;
+        this.articleByCategoryAndPage[category]={
+          page:page,
+          articles:[...this.articleByCategoryAndPage[category].articles,...articles]
+        }
+        return this.articleByCategoryAndPage[category].articles;
+      })
+    );
+  }
 
 }

@@ -1,15 +1,31 @@
  <ion-card>
           <ion-card-subtitle class="ion-margin">
-            <span class="text-prymary">{{index()}}. </span>
-            <span class="article-sourse-name">{{article()[index()!]?.source?.name}}</span>
+            <ion-row class="ion-aling-items-center">
+
+              <ion-col class="ion-margin" (click)="openArticle()">
+                <span class="text-prymary">{{index()}}. </span>
+                <span class="article-sourse-name">{{article()[index()!]?.source?.name}}</span>
+              </ion-col>
+
+              <ion-col aling="right">
+                <ion-button (click)="onOpenMenu()" fill="clear" color="primary" >
+                  configuracion
+                 </ion-button>
+              </ion-col>
+            </ion-row>
           </ion-card-subtitle>
           <ion-card-title class="ion-padding-horizontal ion-margin-buttom">
             {{article()[index()!]?.title}}
           </ion-card-title>
-          <ion-img [src]="article()[index()!]?.urlToImage"></ion-img>
-          @if (article()[index()!]) {
+          @if(article()[index()!]?.urlToImage){
+          <ion-img (click)="openArticle()" [src]="article()[index()!]?.urlToImage"></ion-img>
+          }
+          @if (article()[index()!]?.description) {
           <ion-card-content>
             <p>{{article()[index()!]?.description}}</p>
           </ion-card-content>
         }
         </ion-card>
+        <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+<script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+
