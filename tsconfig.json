@@ -16,9 +16,9 @@
     "experimentalDecorators": true,
     "moduleResolution": "node",
     "importHelpers": true,
-    "target": "es2022",
+    "target": "es2020",//cambiado de es2015 a es2020dddddddddddddddddddddddddddddddddddddddd
     "module": "es2020",
-    "lib": ["es2018", "dom"],
+    "lib": ["es2020", "dom"],//cambiado de es2018 a es2020ddddddddddddddddddddddddddddddddddd
     "useDefineForClassFields": false
   },
   "angularCompilerOptions": {

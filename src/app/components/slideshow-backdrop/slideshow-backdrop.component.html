@@ -1,0 +1,19 @@
+ <swiper-container
+  slides-per-view="1.2"
+  space-between="10"
+  centered-slides="false"
+  loop="false"
+  grab-cursor="true"
+  >
+  @for (pelicula of peliculas; track $index) {
+    <swiper-slide >
+      <ion-card (click)="verDetalle(pelicula.id)">
+        <img
+          [src]="pelicula.backdrop_path | imagen"
+          alt="{{ pelicula.title }}"
+        />
+      </ion-card>
+        </swiper-slide>
+      }
+
+  </swiper-container>
